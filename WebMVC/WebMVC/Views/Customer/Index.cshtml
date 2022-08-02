@@ -1,0 +1,41 @@
+﻿@using WebMVC.Entity
+@using WebMVC.Models
+@model List<Product>
+<section class="products section bg-gray">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 title text-center">
+                 <h2>Category</h2>
+                 <ul class="list-group">
+                      <li class="list-group-item list-group-item-action list-group-item-warning" ><a href="/Customer/Index">ALL</a></li>
+                    @{
+                        List<Category> listCategory = new DAOCategory().GetAllCategory();
+                    }
+                    @foreach(Category category in listCategory)
+                    {
+                        <li class="list-group-item list-group-item-action list-group-item-warning"><a href="/Customer/Index?ID=@category.ID">@category.name</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="col-lg-9 title text-center">
+                <h2>Product</h2>
+                <div class="row" style="margin-left: 3%">
+                    @foreach(Product product in Model)
+                    {
+                        if (product.isSell)
+                        {
+                            <div class="col-lg-3 text-center" style="border: 1px solid black; border-radius: 10px ; margin: 2%;margin-left: 3%; width: 20vw; height: 45vh">
+                                <h5>@product.ProductName</h5>
+                                <img src="@product.Image" alt="alt" width="100" height="100"><br>
+                                <p>Price: @(product.Price + "Đ")</p>
+                                <button class="posision-fixed" style="radius: 10px" ><a href="/Cart/Add?name=@product.ProductName">Add to Cart</a></button>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

@@ -1,0 +1,59 @@
+﻿@using WebMVC.Entity
+@using WebMVC.Models
+<section class="products section bg-gray" style="height: 100vh">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 title text-center">
+                        <h2>Manager</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerAccount/Index">Account Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerCustomer/Index">View Customer</a></li>
+                            <li class="list-group-item" style="margin-left: 5%;background-color: #1bbb1b"><a href="/ManagerShipper/Index">Shipper Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerProduct/Index">Product Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerOrder/Index">Order Manager</a></li>
+                        </ul>
+                    </div >
+                    <div class="col-lg-9 title text-center" style="margin-left: 3%">
+                        <h2>Detail</h2> 
+                          <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>FullName</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Gender</th>
+                                    <th>Active</th>
+                                    <th>Username</th>
+                                </tr>                            
+                            </thead>
+                            <tbody>
+                        @{
+                           List<Shipper> list = new DAOShipper().GetAllShipper();
+                        }
+                        @foreach(Shipper shipper in list)
+                        {
+                           <tr>
+                                    <td>@shipper.ID</td>
+                                    <td>@shipper.FullName</td>
+                                    <td>@shipper.Phone</td>
+                                    <td>@shipper.Email</td>
+                                    <td>@(shipper.Gender ? "Male" : "Female")</td>
+                                    <td>
+                                        <form action="/ManagerShipper/UpdateActive">
+                                            <input type="hidden" name="ID" value="@shipper.ID">
+                                            <input type="radio" name="active" value="true" onchange="this.form.submit()" @(shipper.active ? "checked" : "")>Yes
+                                            <input type="radio" name="active" value="false" onchange="this.form.submit()" @(shipper.active ? "" : "checked")>No
+                                        </form>
+                                     </td>
+                                    <td>@shipper.Username</td>                                 
+                                </tr>
+                        } 
+                            </tbody>
+                        </table>
+               
+            </div>
+                </div>
+            </div>
+        </section>
+

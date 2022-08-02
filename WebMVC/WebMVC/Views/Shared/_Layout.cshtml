@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PHONESHOP | E-commerce template</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+     <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+
+        <!-- Themefisher Icon font -->
+        <link rel="stylesheet" href="plugins/themefisher-font/style.css">
+        <!-- bootstrap.min css -->
+        <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+
+        <!-- Animate css -->
+        <link rel="stylesheet" href="plugins/animate/animate.css">
+        <!-- Slick Carousel -->
+        <link rel="stylesheet" href="plugins/slick/slick.css">
+        <link rel="stylesheet" href="plugins/slick/slick-theme.css">
+
+        <!-- Main Stylesheet -->
+        <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                @{
+                    // if not login
+                    if(ViewData["username"] == null)
+                    {
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    }
+                    else
+                    {
+                        string username = ViewData["username"].ToString();
+                        string role = new DAOAccount().getRoleName(username);
+                        <a class="navbar-brand" asp-area="" asp-controller="@role" asp-action="Index">Home</a>
+                    }
+                }
+                
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">     
+                      @{
+                                // if not login
+                                if(ViewData["username"] == null )
+                                {
+                                <li class="nav-item">  <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Show">Login</a> </li>
+                            }
+                            else
+
+                            {
+                                string username = ViewData["username"].ToString();
+                                string role = new DAOAccount().getRoleName(username);
+                                // if role is customer
+                                if (role.Equals("Customer"))
+                                {
+                                  <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Show">Cart</a></li>
+                                   <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Show">Welcome @ViewData["username"].ToString()</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Logout</a></li>
+                                    // if role is shipper
+                                }else if (role.Equals("Shipper"))
+                                {
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Show">Welcome @ViewData["username"].ToString()</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Logout</a></li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item"><a class="nav-link text-dark" href="#">Welcome admin</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Logout</a></li>
+                                }
+
+                                    
+                                }
+
+                                }
+                            
+                       
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @{
+        // if not login
+        if(ViewData["username"] == null)
+        {
+            <footer class="border-top footer text-muted">
+                <div class="container">
+                    &copy; 2022 - WebMVC - <a href="#">Duc</a>
+                </div>
+            </footer>
+        }
+        else
+        {
+            string username = ViewData["username"].ToString();
+            string role = new DAOAccount().getRoleName(username);
+            //if role not admin
+            if (!role.Equals("Admin"))
+            {
+               <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - WebMVC - <a href="#">Duc</a>
+        </div>
+    </footer>  
+            }
+        }
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="plugins/jquery/dist/jquery.min.js"></script>
+        <!-- Bootstrap 3.1 -->
+        <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+        <!-- Bootstrap Touchpin -->
+        <script src="plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
+        <!-- Instagram Feed Js -->
+        <script src="plugins/instafeed/instafeed.min.js"></script>
+        <!-- Video Lightbox Plugin -->
+        <script src="plugins/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+        <!-- Count Down Js -->
+        <script src="plugins/syo-timer/build/jquery.syotimer.min.js"></script>
+
+        <!-- slick Carousel -->
+        <script src="plugins/slick/slick.min.js"></script>
+        <script src="plugins/slick/slick-animation.min.js"></script>
+
+        <!-- Google Mapl -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+        <script type="text/javascript" src="plugins/google-map/gmap.js"></script>
+
+        <!-- Main Js File -->
+        <script src="Javascript/script.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

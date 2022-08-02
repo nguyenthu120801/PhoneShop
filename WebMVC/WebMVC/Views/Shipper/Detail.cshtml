@@ -1,0 +1,46 @@
+﻿@using System.Data
+@model DataTable
+<section class="user-dashboard page-wrapper" style="height: 100vh">
+      <div class="container">
+           <div class="row">
+                <div class="col-md-12">
+                    <div class="dashboard-wrapper user-dashboard">
+                         <div class="table-responsive" >
+                            <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Image</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                            @{
+                                int sum = 0;
+                            }
+                                    <tbody>
+                                @foreach(DataRow dr in Model.Rows)
+                                {
+                                    <tr>
+                                        <td>@dr["ProductName"]</td>
+                                        <td>
+                                            <img src="@dr["image"]" alt="" width="50" height="50">     
+                                        </td>
+                                        <td>@dr["price"]</td>
+                                        <td>@dr["quantity"]</td>
+                                        <td>@((int) dr["price"] * (int) dr["quantity"])</td>
+                                        @{
+                                            sum = sum + (int)dr["price"] * (int)dr["quantity"];
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                                </table>
+                                <div style="color: orange; font-size: 20px">Grand Total = @sum</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>

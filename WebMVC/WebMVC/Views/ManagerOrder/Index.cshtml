@@ -1,0 +1,167 @@
+﻿@using WebMVC.Entity
+@using WebMVC.Models
+@model List<Order>
+ <section class="products section bg-gray" style="height: 100vh">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 title text-center">
+                        <h2>Manager</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerAccount/Index">Account Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerCustomer/Index">View Customer</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerShipper/Index">Shipper Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerProduct/Index">Product Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%;background-color: #1bbb1b"><a href="/ManagerOrder/Index">Order Manager</a></li>
+                        </ul>
+                    
+                  
+                </div >                 
+                    <div class="col-lg-9 title" style="margin-left: 3%">
+                        <h2 class="text-center">Detail</h2> 
+                        <p>Status
+                            <form action="/ManagerOrder/Index">
+                            <select name="status" onchange="this.form.submit()">
+                                <option value="">ALL</option>
+                                @* if choose all*@
+                                @{
+                                 if(ViewData["status"] == null){
+                                <option value="New">New</option>
+                                <option value="Process">Process</option>
+                                <option value="Done">Done</option>
+                                <option value="Cancel">Cancel</option>
+                                }else{
+                                  if (ViewData["status"].ToString().Equals("New"))
+                                  {
+                                      <option value="New" selected>New</option>
+                                      <option value="Process">Process</option>
+                                      <option value="Done">Done</option>
+                                      <option value="Cancel">Cancel</option>
+                                  }else if(ViewData["status"].ToString().Equals("Process")){
+                                      <option value="New">New</option>
+                                      <option value="Process" selected>Process</option>
+                                      <option value="Done">Done</option>
+                                      <option value="Cancel">Cancel</option>
+                                  }else if(ViewData["status"].ToString().Equals("Done")){
+                                      <option value="New">New</option>
+                                      <option value="Process">Process</option>
+                                      <option value="Done" selected>Done</option>
+                                      <option value="Cancel">Cancel</option>
+                                  }else{
+                                      <option value="New">New</option>
+                                      <option value="Process">Process</option>
+                                      <option value="Done">Done</option>
+                                      <option value="Cancel" selected>Cancel</option>
+                                  }
+                                }
+                        
+                                }
+                                
+                            </select>
+                           </form>
+                        </p>
+                        <p style="color:red" class="text-center">@ViewData["message"]</p>
+                        <p style="color:green" class="text-center">@ViewData["mess"]</p>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>CustomerID</th>
+                                    <th>Status</th>
+                                    <th>OrderDate</th>
+                                    <th>ShippedDate</th>
+                                    <th>ShipID</th>
+                                    <th>Address</th>
+                                    <th>View</th>
+                                    <th>Edit</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>                   
+                        @foreach(Order order in Model)
+                        {
+                            <tr>
+                                <td>@order.OrderID</td>
+                                <td>@order.CustomerID</td>
+                                <td >
+                                    <form action="/ManagerOrder/UpdateStatus" method="POST">
+                                         <input type="hidden" name="ID" value="@order.OrderID">
+                                         <select name="status" onchange="this.form.submit()">
+                                            @if (order.status.Equals("New"))
+                                            {
+                                                <option value="New" selected>New</option>
+                                                <option value="Process">Process</option>
+                                                <option value="Done">Done</option>
+                                                <option value="Cancel">Cancel</option>
+                                            }else if (order.status.Equals("Process"))
+                                            {
+                                                <option value="New">New</option>
+                                                <option value="Process" selected>Process</option>
+                                                <option value="Done">Done</option>
+                                                <option value="Cancel">Cancel</option>
+                                            }else if (order.status.Equals("Done"))
+                                            {
+                                                <option value="New">New</option>
+                                                <option value="Process">Process</option>
+                                                <option value="Done" selected>Done</option>
+                                                <option value="Cancel">Cancel</option>
+                                            }
+                                            else
+                                             {
+                                                <option value="New">New</option>
+                                                <option value="Process">Process</option>
+                                                <option value="Done">Done</option>
+                                                <option value="Cancel" selected>Cancel</option>    
+                                             }                                 
+                                         </select>                      
+                                    </form>
+                                 </td>
+                                <td>@(DateTime.Parse(order.OrderDate).ToString("yyyy-MM-dd"))</td>
+                                <td>@(order.ShippedDate.Length == 0 ? "" : DateTime.Parse(order.ShippedDate).ToString("yyyy-MM-dd"))</td>
+                                <td>
+                                    @{
+                                        List<Shipper> list = new DAOShipper().GetAllShipper();
+                                    }
+                                    <form action= "/ManagerOrder/UpdateShipper" method="POST">
+                                        <input type="hidden" name="OrderID" value="@order.OrderID">
+                                      <select name="ShipID" onchange="this.form.submit()">
+                                         <option value="">No Shipper</option>
+                                            @foreach(Shipper shipper in list)
+                                            {
+                                                if (order.ShipID.Equals(shipper.ID.ToString()))
+                                                {
+                                                    <option value="@shipper.ID" selected>@shipper.ID</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@shipper.ID" >@shipper.ID</option>
+                                                }
+                                            }
+                                     </select>
+                                    </form>
+                                </td>
+                                <td>@order.Address</td>
+                                @{
+                                    string date = order.ShippedDate.Length == 0 ? "" : DateTime.Parse(order.ShippedDate).ToString("yyyy-MM-dd");
+                                }
+                                <td><a class="btn btn-primary" href="/ManagerOrder/View?ID=@order.OrderID">View</a></td>
+                                <td><a class="btn btn-success" href="/ManagerOrder/UpdateShippedDate?ID=@order.OrderID&date=@date">Edit</a></td>
+                                @{
+                                    if(order.status.Equals("Done") || order.status.Equals("Cancel"))
+                                    {
+                                     <td><a class="btn btn-danger" href="/ManagerOrder/Delete?ID=@order.OrderID"  onclick="return confirm('Are you sure you want to delete?')">Remove</a></td>
+                                    }
+                                    else
+                                    {
+                                      <td></td> 
+                                    }
+                                }
+                                
+                            </tr>
+                          }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>

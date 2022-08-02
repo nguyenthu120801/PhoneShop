@@ -1,0 +1,61 @@
+﻿@using WebMVC.Entity;
+@using WebMVC.Models;
+<section class="products section bg-gray" style="height: 100vh">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 title text-center">
+                        <h2>Manager</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item" style="margin-left: 5%;background-color: #1bbb1b"><a href="/ManagerAccount/Index">Account Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerCustomer/Index">View Customer</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerShipper/Index">Shipper Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerProduct/Index">Product Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerOrder/Index">Order Manager</a></li>
+                        </ul>
+                    </div >
+                    <div class="col-lg-9 title text-center" style="margin-left: 3%">
+         <section class="products section bg-gray" style="height: 100vh">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 title" style="margin-left: 4%">
+                        <p style="color:red">@ViewData["message"]</p>
+                        <p style="color:green">@ViewData["mess"]</p>
+                        <h2 class="text-center">Create Account Shipper</h2>
+                        <form class="text-left clearfix" action="/ManagerAccount/DoCreate" method="POST">
+                            <div class="form-group">
+                                <input type="text" class="form-control"  placeholder="FullName" name="FullName" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control"  placeholder="Phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control"  placeholder="Email (optional)" name="email">
+                            </div>
+                            <div class="form-group">
+                                <p>Gender:
+                                    <select name="gender">
+                                        <option value="1">Male</option>
+                                        <option value="0">Female</option>
+                                    </select>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control"  placeholder="Username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Password" name="password" required>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-main text-center">Create</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>   
+                    </div>
+                </div>
+            </div>
+        </section>
+

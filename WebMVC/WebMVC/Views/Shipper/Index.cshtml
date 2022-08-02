@@ -1,0 +1,46 @@
+﻿@using System.Data
+<section class="user-dashboard page-wrapper" style="height: 100vh">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="dashboard-wrapper user-dashboard">
+                            <div class="table-responsive" >
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Customer Phone</th>
+                                            <th>Address</th>
+                                            <th>Total Price</th>
+                                            <th class="col-md-2 col-sm-3">Detail</th>
+                                        </tr>
+                                    </thead>
+                            @{
+                                string username = ViewData["username"].ToString();
+                                int ID = new DAOShipper().getID(username);
+                                string sql = "select o.OrderID, c.FullName as CustomerName,c.phone,o.address,o.TotalPrice from [Order] o join Customer c on o.CustomerID = c.ID "
+                                 + "where o.ShipID=" + ID;
+                                DataTable data = new DAOShipper().getData(sql);
+                            }
+                               <tbody>
+                                @foreach(DataRow dr in data.Rows)
+                                {
+                                    <tr>
+                                        <td>@dr["OrderID"]</td>
+                                        <td>@dr["CustomerName"]</td>
+                                        <td>@dr["phone"]</td>
+                                        <td>@dr["address"]</td>
+                                        <td>@dr["TotalPrice"]</td>
+                                        <td><a href="/Shipper/Detail?ID=@dr["OrderID"]" class="btn btn-success">Detail</a></td>
+                                    </tr>
+                                }
+
+                               </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

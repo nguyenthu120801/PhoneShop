@@ -1,0 +1,48 @@
+﻿@using WebMVC.Entity
+@using WebMVC.Models
+ <section class="products section bg-gray" style="height: 100vh">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 title text-center">
+                        <h2>Manager</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerAccount/Index">Account Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerCustomer/Index">View Customer</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerShipper/Index">Shipper Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%;background-color: #1bbb1b"><a href="/ManagerProduct/Index">Product Manager</a></li>
+                            <li class="list-group-item" style="margin-left: 5%"><a href="/ManagerOrder/Index">Order Manager</a></li>
+                        </ul>
+                @{
+                    List<Category> list = new DAOCategory().GetAllCategory();
+                }
+                     </div >
+                         <div class="col-lg-9 title" style="margin-left: 3%">
+                          <p style="color:green">@ViewData["mess"]</p>
+                          <form action="/ManagerProduct/DoAdd" method="POST" class="text-left clearfix"> 
+                            <div class="form-group"> 
+                                <input type="text" class="form-control" name="name" style="width: 600px" placeholder="Product Name" value="" required>           
+                            </div>
+                            <div class="form-group"> 
+                                Image link :<input type="text" name="img" style="width: 700px" value="" required />
+                            </div> 
+
+                            <div class="form-group"> 
+                                Category :
+                                 <select name="catID">
+                            @foreach(Category category in list)
+                            {
+                                <option value="@category.ID">@category.name</option>
+                            }
+                        </select>
+                            </div> 
+                            <div class="form-group"> 
+                                <input type="number" min="1" name="price" class="form-control" style="width: 300px" placeholder= "Price" value="" required>
+                            </div> 
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-main text-center" onclick="return confirm('Are you sure you want to add?')">Save</button>
+                            </div>
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </section>

@@ -1,0 +1,62 @@
+﻿@model Dictionary<string ,int>
+<section class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="content">
+                            <h1 class="page-name">Show Cart</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ </section>
+ <h3 style="color:red">@ViewData["message"]</h3>
+ <section class="user-dashboard page-wrapper" style="height: 100vh">
+     <div class="container">
+         <div class="dashboard-wrapper user-dashboard">
+             <div class="table-responsive">
+                 <table class="table">
+                       <thead>
+                             <tr>   
+                                 <th>Name</th>
+                                 <th>Image</th>
+                                 <th>Quantity</th>
+                                 <th>Price</th>
+                                 <th>Total</th>
+                                 <th class="col-md-2 col-sm-3">Actions</th>
+                             </tr>
+                       </thead>
+                       <tbody>
+                            @{
+                                int sum = 0;
+                            }
+                            @foreach(string name in Model.Keys)
+                            {
+                                string image = new DAOProduct().getImage(name);
+                                int price = new DAOProduct().getPrice(name);
+                                int quantity = Model[name];
+                                int total = quantity * price;
+                                sum = sum + total;
+                                <tr>
+                                    <td>@name</td>
+                                    <td><img src="@image" alt="" width="50" height="50"></td>
+                                    <td>
+                                        <form action="/Cart/Update">
+                                            <input type="hidden" name="name" value="@name">  
+                                            <input type="number" name="quantity" min = "1" value="@quantity" onchange="this.form.submit()">
+                                        </form>
+                                    </td>
+                                    <td>@price</td>
+                                    <td>@total</td>
+                                    <td><a href="/Cart/Remove?name=@name" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')"> Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                 </table>
+                 <h3>Total Amount: @sum</h3>
+
+             </div>
+         </div>
+         <a href="/Cart/CheckOut" class="btn btn-success w-100">check out</a>
+     </div>
+ </section>
